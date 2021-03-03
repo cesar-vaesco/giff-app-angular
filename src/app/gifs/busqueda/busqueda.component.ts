@@ -17,6 +17,11 @@ constructor(private gifsService: GifsService) {
   buscar( ){
       const valor = this.txtBuscar.nativeElement.value;
 
+      //Validar que no ingresen datos vacios
+      if(valor.trim().length === 0){
+          return;
+      }
+
       this.gifsService.buscarGifs(valor);
 
       this.txtBuscar.nativeElement.value="";
