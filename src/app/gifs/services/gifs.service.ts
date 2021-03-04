@@ -7,8 +7,10 @@ import { HttpClient } from '@angular/common/http';
 export class GifsService {
 
   private apiKey: string = '9OnP9ScBFo7lVnqAxfm0BKnezDQJw1Hb';
-
   private _historial: string[] = [];
+
+//   TODO: cambiar any por su tipo correspondiente
+  public resultados: any[] = [];
 
   get historial() {
     return [...this._historial];
@@ -26,11 +28,14 @@ export class GifsService {
       // Crece el arreglo solomanete si se agrea un nuevo elemento al mismo
       this._historial = this._historial.splice(0, 10);
     }
-    this.http.get(
-      'https://api.giphy.com/v1/gifs/search?api_key=9OnP9ScBFo7lVnqAxfm0BKnezDQJw1Hb&q=dragon ball z&limit=10')
-      .subscribe( (resp: any) =>{
-          console.log(resp.data);
-      })
+    this.http
+      .get(
+        `https://api.giphy.com/v1/gifs/search?api_key=${ this.apiKey }&q=${ query }&limit=10`
+      )
+      .subscribe((resp: any) => {
+        console.log(resp.data);
+        this.resultados = resp.data;
+      });
 
   }
 }
