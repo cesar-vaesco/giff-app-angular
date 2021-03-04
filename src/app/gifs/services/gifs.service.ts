@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Gif, SearchGifsResponse } from '../interface/gifs.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GifsService {
-
+  /**  Atributos de la clase */
   private apiKey: string = '9OnP9ScBFo7lVnqAxfm0BKnezDQJw1Hb';
   private _historial: string[] = [];
 
-//   TODO: cambiar any por su tipo correspondiente
-  public resultados: any[] = [];
+  public resultados: Gif[] = [];
 
+  /** Métodos  */
   get historial() {
     return [...this._historial];
   }
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) {}
 
   buscarGifs(query: string = '') {
-    //Acegurar que el dato sea registrado con minusculas
+    //Asegurar que el dato sea registrado con minusculas
     query = query.trim().toLowerCase();
 
     //Validar que un elemento de un arreglo no se repita y así evitar egistro duplicado
@@ -29,13 +30,12 @@ export class GifsService {
       this._historial = this._historial.splice(0, 10);
     }
     this.http
-      .get(
-        `https://api.giphy.com/v1/gifs/search?api_key=${ this.apiKey }&q=${ query }&limit=10`
+      .get<SearchGifsResponse>(
+        `https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${query}&limit=10`
       )
-      .subscribe((resp: any) => {
+      .subscribe((resp) => {
         console.log(resp.data);
         this.resultados = resp.data;
       });
-
   }
 }
