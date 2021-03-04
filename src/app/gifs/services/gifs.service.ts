@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GifsService {
+
+  private apiKey: string = '9OnP9ScBFo7lVnqAxfm0BKnezDQJw1Hb';
+
   private _historial: string[] = [];
 
   get historial() {
     return [...this._historial];
   }
 
-  buscarGifs(query: string = '') {
+  constructor(private http: HttpClient){}
 
+  buscarGifs(query: string = '') {
     //Acegurar que el dato sea registrado con minusculas
     query = query.trim().toLowerCase();
 
@@ -21,7 +26,11 @@ export class GifsService {
       // Crece el arreglo solomanete si se agrea un nuevo elemento al mismo
       this._historial = this._historial.splice(0, 10);
     }
+    this.http.get(
+      'https://api.giphy.com/v1/gifs/search?api_key=9OnP9ScBFo7lVnqAxfm0BKnezDQJw1Hb&q=dragon ball z&limit=10')
+      .subscribe( (resp: any) =>{
+          console.log(resp.data);
+      })
 
-    console.log(this.historial);
   }
 }
