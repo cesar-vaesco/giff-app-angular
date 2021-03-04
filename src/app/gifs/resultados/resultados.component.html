@@ -6,11 +6,12 @@
     <div *ngFor="let gif of resultados"
          class="col-md-4 col-sm-6">
 
-        <div class="card">
+        <div class="card m-3">
             <img
             [src]="gif.images.downsized_medium.url"
             [alt]="gif.title"
             class="card-img-top"
+            width="304" height="236"
             >
             <div class="card-body">
                 <p class="card-text">
