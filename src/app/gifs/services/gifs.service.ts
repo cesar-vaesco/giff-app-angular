@@ -19,6 +19,10 @@ export class GifsService {
 
   constructor(private http: HttpClient) {
     this._historial = JSON.parse(localStorage.getItem('historial')!) || [];
+
+    // resultados
+    this.resultados = JSON.parse(localStorage.getItem('resultados')!) || [];
+
     // if(localStorage.getItem('historial') ){
     //     this._historial = JSON.parse(localStorage.getItem('historial')!);
     // }
@@ -34,15 +38,16 @@ export class GifsService {
       // Crece el arreglo solomanete si se agrea un nuevo elemento al mismo
       this._historial = this._historial.splice(0, 10);
 
-      localStorage.setItem('historial', JSON.stringify( this._historial ));
+      localStorage.setItem('historial', JSON.stringify(this._historial));
     }
     this.http
-      .get<SearchGifsResponse>(
+    .get<SearchGifsResponse>(
         `https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${query}&limit=10`
-      )
-      .subscribe((resp) => {
-        console.log(resp.data);
-        this.resultados = resp.data;
+        )
+        .subscribe((resp) => {
+            console.log(resp.data);
+            this.resultados = resp.data;
+            localStorage.setItem('resultados', JSON.stringify(this.resultados));
       });
   }
 }
